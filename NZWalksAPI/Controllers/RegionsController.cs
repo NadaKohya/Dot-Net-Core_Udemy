@@ -24,13 +24,13 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(RegionDto regionDto)
+        public async Task<IActionResult> Create([FromBody] RegionDto regionDto)
         {
             if (ModelState.IsValid)
             {
                Region region = mapper.Map<Region>(regionDto);
                 await regionRepository.Create(region);
-                return Ok("Saved");
+                return Ok("Created");
             }
             return BadRequest(ModelState);
         }
@@ -41,12 +41,12 @@ namespace NZWalksAPI.Controllers
             try
             {
                 List<Region> regions = await regionRepository.GetAll();
-                List<RegionDto> regionsDto = mapper.Map<List<RegionDto>>(regions);
-                return Ok(regionsDto);
+                List<RegionDto> regionDtos = mapper.Map<List<RegionDto>>(regions);
+                return Ok(regionDtos);
             }
             catch
             {
-                return BadRequest("Error in getting regions");
+                return BadRequest("Error in getting all regions");
             }
         }
 

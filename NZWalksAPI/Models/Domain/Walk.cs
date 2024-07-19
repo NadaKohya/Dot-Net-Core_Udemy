@@ -19,7 +19,6 @@ namespace NZWalksAPI.Models.Domain
 		// Navigation properties
 		public virtual Difficulty Difficulty { get; set; }
 		public virtual Region Region { get; set; }
-
     }
 }
 

@@ -32,15 +32,14 @@ namespace NZWalksAPI.Repositories
         public async Task<Region?> Update(Guid id, Region region)
         {
             Region existedRegion = await context.Regions.FirstOrDefaultAsync(region => region.Id == id);
-            if(existedRegion != null)
+            if (existedRegion != null)
             {
                 existedRegion.Code = region.Code;
                 existedRegion.Name = region.Name;
                 existedRegion.RegionImageUrl = region.RegionImageUrl;
                 await context.SaveChangesAsync();
-                return existedRegion;
             }
-            return null;
+            return existedRegion;
         }
 
         public async Task<Region?> Remove(Guid id)
