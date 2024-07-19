@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,12 @@ namespace NZWalksAPI.Controllers
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository regionRepository;
-        public RegionsController(IRegionRepository regionRepository)
+        private readonly IMapper mapper;
+
+        public RegionsController(IRegionRepository regionRepository, IMapper mapper)
         {
             this.regionRepository = regionRepository;
+            this.mapper = mapper;
         }
 
         [HttpPost]
@@ -24,12 +28,7 @@ namespace NZWalksAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Region region = new Region()
-                {
-                    Code = regionDto.Code,
-                    Name = regionDto.Name,
-                    RegionImageUrl = regionDto.RegionImageUrl
-                };
+               Region region = mapper.Map<Region>(regionDto);
                 await regionRepository.Create(region);
                 return Ok("Saved");
             }
@@ -42,16 +41,7 @@ namespace NZWalksAPI.Controllers
             try
             {
                 List<Region> regions = await regionRepository.GetAll();
-                List<RegionDto> regionsDto = new List<RegionDto>();
-                foreach (var region in regions)
-                {
-                    regionsDto.Add(new RegionDto()
-                    {
-                        Code = region.Code,
-                        Name = region.Name,
-                        RegionImageUrl = region.RegionImageUrl
-                    });
-                }
+                List<RegionDto> regionsDto = mapper.Map<List<RegionDto>>(regions);
                 return Ok(regionsDto);
             }
             catch
@@ -66,12 +56,8 @@ namespace NZWalksAPI.Controllers
             Region region = await regionRepository.GetById(id);
             if (region != null)
             {
-                RegionDto regionDto = new RegionDto()
-                {
-                    Code = region.Code,
-                    Name = region.Name,
-                    RegionImageUrl = region.RegionImageUrl
-                };
+
+                RegionDto regionDto = mapper.Map<RegionDto>(region);
                 return Ok(regionDto);
             }
             return NotFound("Can't find the wanted region");
@@ -82,10 +68,7 @@ namespace NZWalksAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Region region = new Region();
-                region.Code = regionDto.Code;
-                region.Name = regionDto.Name;
-                region.RegionImageUrl = regionDto.RegionImageUrl;
+                Region region = mapper.Map<Region>(regionDto);
                 Region updatedRegion = await regionRepository.Update(id, region);
                 if (updatedRegion != null)
                 {

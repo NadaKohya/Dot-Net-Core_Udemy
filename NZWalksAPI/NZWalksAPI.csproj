@@ -15,6 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,7 @@
     <None Remove="Models\Data\" />
     <None Remove="DTOs\" />
     <None Remove="Repositories\" />
+    <None Remove="Mappings\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -36,5 +38,6 @@
     <Folder Include="Models\Data\" />
     <Folder Include="DTOs\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Mappings\" />
   </ItemGroup>
 </Project>
