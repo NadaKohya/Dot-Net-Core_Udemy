@@ -1,4 +1,10 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+using NZWalksAPI.Interfaces;
+using NZWalksAPI.Models.Data;
+using NZWalksAPI.Repositories;
+
+var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configurations = builder.Configuration;
 
 // Add services to the container.
 
@@ -6,6 +12,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<NZWalksDbContext>(options =>
+    options.UseSqlServer(configurations["ConnectionStrings:NZWalksConnectionString"]));
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 
 var app = builder.Build();
 
