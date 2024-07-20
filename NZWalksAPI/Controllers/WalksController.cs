@@ -31,9 +31,9 @@ namespace NZWalksAPI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
-            [FromQuery] string? sortBy, [FromQuery] bool? isAscending)
+            [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
-            List<Walk> walks = await walkRepository.GetAll(filterOn, filterQuery, sortBy, isAscending ?? true);
+            List<Walk> walks = await walkRepository.GetAll(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
             try
             {
                 List<WalkWithNavigationDto> walkWithNavigationDtos = mapper.Map<List<WalkWithNavigationDto>>(walks);

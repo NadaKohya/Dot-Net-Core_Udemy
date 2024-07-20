@@ -23,9 +23,11 @@ namespace NZWalksAPI.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<Region>> GetAll(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true)
+        public async Task<List<Region>> GetAll(string? filterOn = null, string? filterQuery = null,
+            string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
         {
             var regions = context.Regions.AsQueryable();
+
             // Filtering
             // We will make filtering only by the Name
             if(!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
@@ -35,6 +37,7 @@ namespace NZWalksAPI.Repositories
                     regions = regions.Where(r => r.Name.Contains(filterQuery));
                 }
             }
+
             // Sorting
             if (!string.IsNullOrWhiteSpace(sortBy))
             {
@@ -43,8 +46,11 @@ namespace NZWalksAPI.Repositories
                     regions = isAscending ? regions.OrderBy(r => r.Name) : regions.OrderByDescending(r => r.Name);
                 }
             }
-                    // Paginating
-                    return await regions.ToListAsync();
+
+            // Paginating
+            var skipedPages = (pageNumber - 1) * pageSize;
+
+            return await regions.Skip(skipedPages).Take(pageSize).ToListAsync();
         }
 
         public async Task<Region?> GetById(Guid id)
