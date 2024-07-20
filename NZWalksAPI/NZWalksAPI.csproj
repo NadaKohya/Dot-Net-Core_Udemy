@@ -28,6 +28,7 @@
     <None Remove="DTOs\" />
     <None Remove="Repositories\" />
     <None Remove="Mappings\" />
+    <None Remove="CustomActionFilters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -39,5 +40,6 @@
     <Folder Include="DTOs\" />
     <Folder Include="Repositories\" />
     <Folder Include="Mappings\" />
+    <Folder Include="CustomActionFilters\" />
   </ItemGroup>
 </Project>

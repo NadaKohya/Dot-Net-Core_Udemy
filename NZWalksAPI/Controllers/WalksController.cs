@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NZWalksAPI.CustomActionFilters;
 using NZWalksAPI.DTOs;
 using NZWalksAPI.Interfaces;
 using NZWalksAPI.Models.Domain;
@@ -20,15 +21,12 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] WalkDto walkDto)
         {
-            if (ModelState.IsValid)
-            {
                 Walk walk = mapper.Map<Walk>(walkDto);
                 await walkRepository.Create(walk);
                 return Ok("Created");
-            }
-            return BadRequest(ModelState);
         }
 
         [HttpGet]
@@ -59,10 +57,9 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPut("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update(Guid id, [FromBody] WalkUpdateDto walkUpdateDto)
         {
-            if (ModelState.IsValid)
-            {
                 Walk walk = mapper.Map<Walk>(walkUpdateDto);
                 Walk updatedWalk = await walkRepository.Update(id, walk);
                 if (updatedWalk != null)
@@ -70,8 +67,6 @@ namespace NZWalksAPI.Controllers
                     return Ok("Updated");
                 }
                 return NotFound();
-            }
-            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id:Guid}")]

@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using NZWalksAPI.CustomActionFilters;
 using NZWalksAPI.DTOs;
 using NZWalksAPI.Interfaces;
 using NZWalksAPI.Models.Data;
@@ -24,15 +25,12 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] RegionDto regionDto)
         {
-            if (ModelState.IsValid)
-            {
                Region region = mapper.Map<Region>(regionDto);
                 await regionRepository.Create(region);
                 return Ok("Created");
-            }
-            return BadRequest(ModelState);
         }
 
         [HttpGet]
@@ -64,10 +62,9 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPut("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update(Guid id, [FromBody] RegionDto regionDto)
         {
-            if (ModelState.IsValid)
-            {
                 Region region = mapper.Map<Region>(regionDto);
                 Region updatedRegion = await regionRepository.Update(id, region);
                 if (updatedRegion != null)
@@ -75,8 +72,6 @@ namespace NZWalksAPI.Controllers
                     return Ok("Updated");
                 }
                 return NotFound();
-            }
-            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id:Guid}")]
