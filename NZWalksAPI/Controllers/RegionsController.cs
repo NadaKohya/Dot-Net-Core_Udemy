@@ -34,11 +34,11 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery]  string? filterQuery)
         {
             try
             {
-                List<Region> regions = await regionRepository.GetAll();
+                List<Region> regions = await regionRepository.GetAll(filterOn, filterQuery);
                 List<RegionDto> regionDtos = mapper.Map<List<RegionDto>>(regions);
                 return Ok(regionDtos);
             }

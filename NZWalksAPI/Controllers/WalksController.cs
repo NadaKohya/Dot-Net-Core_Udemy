@@ -22,21 +22,21 @@ namespace NZWalksAPI.Controllers
 
         [HttpPost]
         [ValidateModel]
-        public async Task<IActionResult> Create([FromBody] WalkDto walkDto)
+        public async Task<IActionResult> Create([FromBody] WalkDto walkCreationDto)
         {
-                Walk walk = mapper.Map<Walk>(walkDto);
+                Walk walk = mapper.Map<Walk>(walkCreationDto);
                 await walkRepository.Create(walk);
                 return Ok("Created");
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
         {
-            List<Walk> walks = await walkRepository.GetAll();
+            List<Walk> walks = await walkRepository.GetAll(filterOn, filterQuery);
             try
             {
-                List<WalkDto> walkDtos = mapper.Map<List<WalkDto>>(walks);
-                return Ok(walkDtos);
+                List<WalkWithNavigationDto> walkWithNavigationDtos = mapper.Map<List<WalkWithNavigationDto>>(walks);
+                return Ok(walkWithNavigationDtos);
             }
             catch
             {
@@ -50,15 +50,15 @@ namespace NZWalksAPI.Controllers
             Walk walk = await walkRepository.GetById(id);
             if (walk != null)
             {
-                WalkDto walkDto = mapper.Map<WalkDto>(walk);
-                return Ok(walkDto);
+                WalkWithNavigationDto walkWithNavigationDto = mapper.Map<WalkWithNavigationDto>(walk);
+                return Ok(walkWithNavigationDto);
             }
             return NotFound("Can't find the wanted walk");
         }
 
         [HttpPut("{id:Guid}")]
         [ValidateModel]
-        public async Task<IActionResult> Update(Guid id, [FromBody] WalkUpdateDto walkUpdateDto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] WalkDto walkUpdateDto)
         {
                 Walk walk = mapper.Map<Walk>(walkUpdateDto);
                 Walk updatedWalk = await walkRepository.Update(id, walk);

@@ -6,7 +6,7 @@ namespace NZWalksAPI.Interfaces
 	{
         // it can return null
         Task Create(Region region);
-        Task<List<Region>> GetAll();
+        Task<List<Region>> GetAll(string? filterOn = null, string? filterQuery = null);
         // it can return null
         Task<Region?> GetById(Guid id);
         // it can return null

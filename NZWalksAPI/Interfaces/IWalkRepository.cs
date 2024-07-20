@@ -7,7 +7,7 @@ namespace NZWalksAPI.Interfaces
 	{
         // it can return null
         Task Create(Walk walk);
-        Task<List<Walk>> GetAll();
+        Task<List<Walk>> GetAll(string? filterOn = null, string? filterQuery = null);
         // it can return null
         Task<Walk?> GetById(Guid id);
         // it can return null

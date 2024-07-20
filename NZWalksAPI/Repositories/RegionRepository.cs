@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalksAPI.DTOs;
 using NZWalksAPI.Interfaces;
@@ -14,14 +16,25 @@ namespace NZWalksAPI.Repositories
         {
             this.context = context;
         }
+
         public async Task Create(Region region)
         {
             await context.Regions.AddAsync(region);
             await context.SaveChangesAsync();
         }
-        public async Task<List<Region>> GetAll()
+
+        public async Task<List<Region>> GetAll(string? filterOn = null, string? filterQuery = null)
         {
-            return await context.Regions.ToListAsync();
+            var regions = context.Regions.AsQueryable();
+            // We will make filtering only by the Name
+            if(!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
+            {
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    return await regions.Where(r => r.Name.Contains(filterQuery)).ToListAsync();
+                }
+            }
+            return await regions.ToListAsync();
         }
 
         public async Task<Region?> GetById(Guid id)
