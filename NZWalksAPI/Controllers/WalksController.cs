@@ -59,11 +59,11 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] WalkDto walkDto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] WalkUpdateDto walkUpdateDto)
         {
             if (ModelState.IsValid)
             {
-                Walk walk = mapper.Map<Walk>(walkDto);
+                Walk walk = mapper.Map<Walk>(walkUpdateDto);
                 Walk updatedWalk = await walkRepository.Update(id, walk);
                 if (updatedWalk != null)
                 {
@@ -82,7 +82,7 @@ namespace NZWalksAPI.Controllers
             {
                 return Ok("Removed");
             }
-            return NotFound();
+            return NotFound(); 
         }
     }
 }

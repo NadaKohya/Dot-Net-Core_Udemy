@@ -1,18 +1,17 @@
-﻿using NZWalksAPI.Models.Domain;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using NZWalksAPI.Models.Domain;
 
 namespace NZWalksAPI.DTOs
 {
-	public class WalkDto
+	public class WalkUpdateDto
 	{
         public string Name { get; set; }
         public string Description { get; set; }
         public double LengthInKm { get; set; }
         public string? WalkImageUrl { get; set; }
-
-        // Navigation properties
-        public virtual Difficulty Difficulty { get; set; }
-        public virtual Region Region { get; set; }
+        public Guid DifficultyId { get; set; }
+        public Guid RegionId { get; set; }
     }
 }
 

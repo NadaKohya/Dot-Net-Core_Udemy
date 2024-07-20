@@ -3,9 +3,7 @@ namespace NZWalksAPI.DTOs
 {
 	public class DifficultyDto
 	{
-		public DifficultyDto()
-		{
-		}
-	}
+        public string Name { get; set; }
+    }
 }
 

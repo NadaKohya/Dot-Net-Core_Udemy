@@ -23,17 +23,17 @@ namespace NZWalksAPI.Repositories
 
         public async Task<List<Walk>> GetAll()
         {
-            return await context.Walks.ToListAsync();
+            return await context.Walks.Include(w => w.Difficulty).Include(w => w.Region).ToListAsync();
         }
 
         public async Task<Walk?> GetById(Guid id)
         {
-            return await context.Walks.FirstOrDefaultAsync(walk => walk.Id == id);
+            return await context.Walks.Include(w => w.Difficulty).Include(w => w.Region).FirstOrDefaultAsync(walk => walk.Id == id);
         }
 
         public async Task<Walk?> Update(Guid id, Walk walk)
         {
-            Walk existedWalk = await context.Walks.FirstOrDefaultAsync(walk => walk.Id == id);
+            Walk existedWalk = await context.Walks.Include(w => w.Difficulty).Include(w => w.Region).FirstOrDefaultAsync(walk => walk.Id == id);
             if (existedWalk != null)
             {
                 existedWalk.Name = walk.Name;
@@ -49,7 +49,7 @@ namespace NZWalksAPI.Repositories
 
         public async Task<Walk?> Remove(Guid id)
         {
-            Walk walk = await context.Walks.FirstOrDefaultAsync(walk => walk.Id == id);
+            Walk walk = await context.Walks.Include(w => w.Difficulty).Include(w => w.Region).FirstOrDefaultAsync(walk => walk.Id == id);
             if(walk != null)
             {
                 context.Walks.Remove(walk);
