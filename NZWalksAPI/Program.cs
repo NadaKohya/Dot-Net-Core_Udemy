@@ -9,11 +9,27 @@ using NZWalksAPI.Mappings;
 using NZWalksAPI.Models.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Repositories;
+using Serilog;
+using Serilog.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configurations = builder.Configuration;
 
 // Add services to the container.
+string logsFilePath = "Logs/logs.txt";
+
+// Rolling interval is used to divide logs per a specific period
+// if minimum level of logging is warning, I won't be able to see information logs
+// if minimum level of logging is error, I won't be able to see information logs nor warning logs
+Logger loggerConfiguration = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File(logsFilePath, rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Information()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(loggerConfiguration);
+
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
