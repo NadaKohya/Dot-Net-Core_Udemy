@@ -20,6 +20,10 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.36.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.36.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.32" />
+    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.32" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +37,7 @@
     <None Remove="Repositories\" />
     <None Remove="Mappings\" />
     <None Remove="CustomActionFilters\" />
+    <None Remove="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -45,5 +50,6 @@
     <Folder Include="Repositories\" />
     <Folder Include="Mappings\" />
     <Folder Include="CustomActionFilters\" />
+    <Folder Include="Images\" />
   </ItemGroup>
 </Project>
