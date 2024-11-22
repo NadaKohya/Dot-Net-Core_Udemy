@@ -6,6 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using NZWalksAPI.Interfaces;
 using NZWalksAPI.Mappings;
+using NZWalksAPI.Middlewares;
 using NZWalksAPI.Models.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Repositories;
@@ -70,6 +71,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

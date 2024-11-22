@@ -43,6 +43,7 @@
     <None Remove="CustomActionFilters\" />
     <None Remove="Images\" />
     <None Remove="Logs\" />
+    <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -57,5 +58,6 @@
     <Folder Include="CustomActionFilters\" />
     <Folder Include="Images\" />
     <Folder Include="Logs\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
 </Project>
