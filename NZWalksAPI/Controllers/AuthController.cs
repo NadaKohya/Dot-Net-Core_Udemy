@@ -5,25 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using NZWalksAPI.CustomActionFilters;
 using NZWalksAPI.DTOs;
+using NZWalksAPI.Interfaces;
 using NZWalksAPI.Models.Domain;
 
 namespace NZWalksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthContrroller : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ITokenRepository tokenRepository;
 
-        public AuthContrroller(UserManager<ApplicationUser> userManager)
+        public AuthController(UserManager<ApplicationUser> userManager, ITokenRepository tokenRepository)
         {
             this.userManager = userManager;
+            this.tokenRepository = tokenRepository;
         }
 
         // Route is important to be specified here because we have more than one post method
-        [HttpPost("RegisteUser")]
+        [HttpPost("RegisterUser")]
         [ValidateModel]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
         {
@@ -65,6 +69,28 @@ namespace NZWalksAPI.Controllers
                 }
             }
             return NotFound();
+        }
+
+        [HttpPost("Login")]
+        [ValidateModel]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var user = await userManager.FindByNameAsync(loginDto.UserName);
+            if(user != null)
+            {
+                bool isCorrectPassword = await userManager.CheckPasswordAsync(user, loginDto.Password);
+                if (isCorrectPassword)
+                {
+                    IList<string> roles = await userManager.GetRolesAsync(user);
+                    if(roles != null)
+                    {
+                        string jwtToken = tokenRepository.CreateJWTToken(user, roles.ToList());
+                        return Ok(jwtToken);
+                    }
+                }
+                return NotFound("Incorrect password");
+            }
+            return NotFound("Can't find user name");
         }
     }
 }

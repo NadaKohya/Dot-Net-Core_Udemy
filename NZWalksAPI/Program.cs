@@ -21,13 +21,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<NZWalksDbContext>(options =>
     options.UseSqlServer(configurations["ConnectionStrings:NZWalksConnectionString"]));
-builder.Services.AddDbContext<NZWalksAuthDbContext>(options =>
-    options.UseSqlServer(configurations["ConnectionStrings:NZWalksAuthConnectionString"]));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<NZWalksAuthDbContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<NZWalksDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
